@@ -14,7 +14,7 @@ module UserPraise
     }
     
     def initialize(token, cache = {})
-      @fb_token =token
+      @gnews_token =token
       @cache = cache
     end
     
@@ -24,15 +24,15 @@ module UserPraise
   
     private
      
-     def fb_api_path(path)
-       'https://graph.facebook.com/v2.10/' + path
+     def gnews_api_path(path)
+       'https://newsapi.org/v1/' + path
      end
      
-     def call_fb_url(url)
+     def call_gnews_url(url)
        result = @cache.fetch(url) do
          HTTP.headers(
-           'Accepts' => 'application/json',
-           'Authorization' => 'Bearer #{@fb_token}' ).get(url)
+           'Accept' => 'application/json',
+           'x-api-key' => "#{config['gnews_token']}" ).get(url)
        end
        
        successful?(result) ? result : raise_error(result)
