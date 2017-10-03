@@ -2,7 +2,7 @@ require 'http'
 
 module UserPraise
   
-  class FbAPI
+  class GnewsAPI
     module Errors
       class NotFound < StandardError; end
       class Unauthorized < StandardError; end
@@ -18,8 +18,16 @@ module UserPraise
       @cache = cache
     end
     
-    def user
-      
+    def sources
+      sources_req_url = gnews_api_path('sources')
+      sources_data = call_gnews_url(sources_req_url).parse
+      Source.new(sources_data)
+    end
+    
+    def article(source)
+      article_req_url = gnews_api_path('article?source=' + source)
+      article_data = call_gnews_url(article_req_url).parse
+      Article.new(article_data, self)
     end
   
     private
@@ -32,9 +40,8 @@ module UserPraise
        result = @cache.fetch(url) do
          HTTP.headers(
            'Accept' => 'application/json',
-           'x-api-key' => "#{config['gnews_token']}" ).get(url)
+           'x-api-key' => "#{@gnews_token}" ).get(url)
        end
-       
        successful?(result) ? result : raise_error(result)
      end
      
