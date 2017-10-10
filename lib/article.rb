@@ -4,38 +4,28 @@ module SourcePraise
   
   class Article
     
-    def initialize(article_data, data_source)
+    def initialize(article_data)
       @article = article_data
-      @data_source = data_source
     end
     
-    def author(index)
-      overflow(index) ? "index overflow" : @article['article'][index]['author']
+    def author
+      @article['article']['author']
     end
     
-    def title(index)
-      overflow(index) ? "index overflow" : @article['article'][index]['title']
+    def title
+      @article['article']['title']
     end
     
-    def description(index)
-      overflow(index) ? "index overflow" : @article['article'][index]['description']
+    def description
+      @article['article']['description']
     end
     
-    def url(index)
-      overflow(index) ? "index overflow" : @article['article'][index]['url']
+    def url
+      @article['article']['url']
     end
     
     def source
       @article['source']
-    end
-    
-    private
-    def overflow(index)
-      index > (@article.length - 1)
-    end
-    
-    def error
-      puts 'index overflow'
     end
     
   end

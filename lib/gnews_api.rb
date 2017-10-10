@@ -1,4 +1,6 @@
 require 'http'
+require_relative 'source.rb'
+require_relative 'article.rb'
 
 module UserPraise
   
@@ -21,13 +23,13 @@ module UserPraise
     def sources
       sources_req_url = gnews_api_path('sources')
       sources_data = call_gnews_url(sources_req_url).parse
-      Source.new(sources_data)
+      sources_data.map { |source_data| Source.new(source_data) }
     end
     
     def article(source)
       article_req_url = gnews_api_path('article?source=' + source)
-      article_data = call_gnews_url(article_req_url).parse
-      Article.new(article_data, self)
+      articles_data = call_gnews_url(article_req_url).parse
+      articles_data.map { |article_data| Article.new(article_data) }
     end
   
     private

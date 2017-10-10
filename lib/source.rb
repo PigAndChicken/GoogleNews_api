@@ -6,47 +6,32 @@ module SourcePraise
       @source = source_data
     end
     
-    def all_sources(key)
-      source_values = []
-      @source.each { |s| source_values << s['#{key}'] }
-      source_values
+    def id
+      @source['id']
     end
     
-    def id(index)
-      overflow(index) ? "index overflow" : @source[index]['id']
+    def name
+      @source['name']
     end
     
-    def name(index)
-      overflow(index) ? "index overflow" : @source[index]['name']
+    def description
+      @source['description']
     end
     
-    def description(index)
-      overflow(index) ? "index overflow" : @source[index]['description']
+    def url
+      @source['url']
     end
     
-    def url(index)
-      overflow(index) ? "index overflow" : @source[index]['url']
+    def category
+      @source['category']
     end
     
-    def category(index)
-      overflow(index) ? "index overflow" : @source[index]['category']
+    def language
+      @source['language']
     end
     
-    def language(index)
-      overflow(index) ? "index overflow" : @source[index]['language']
-    end
-    
-    def country(index)
-      overflow(index) ? "index overflow" : @source[index]['country']
-    end
-    
-    private
-    def overflow(index)
-      index > (@article.length - 1)
-    end
-    
-    def error
-      puts 'index overflow'
+    def country
+      @source['country']
     end
     
   end
