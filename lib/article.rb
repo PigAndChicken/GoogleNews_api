@@ -4,8 +4,9 @@ module SourcePraise
   
   class Article
     
-    def initialize(article_data)
+    def initialize(article_data, source)
       @article = article_data
+      @source = source
     end
     
     def author
@@ -25,7 +26,7 @@ module SourcePraise
     end
     
     def source
-      @article['source']
+      @source
     end
     
   end

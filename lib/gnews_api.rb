@@ -2,7 +2,7 @@ require 'http'
 require_relative 'source.rb'
 require_relative 'article.rb'
 
-module UserPraise
+module SourcePraise
   
   class GnewsAPI
     module Errors
@@ -15,21 +15,22 @@ module UserPraise
       404 => Errors::NotFound
     }
     
-    def initialize(token, cache = {})
+    def initialize(token)
       @gnews_token =token
-      @cache = cache
     end
     
     def sources
       sources_req_url = gnews_api_path('sources')
       sources_data = call_gnews_url(sources_req_url).parse
+      sources_data = sources_data['sources']
       sources_data.map { |source_data| Source.new(source_data) }
     end
     
-    def article(source)
-      article_req_url = gnews_api_path('article?source=' + source)
+    def articles(source)
+      article_req_url = gnews_api_path('articles?source=' + source)
       articles_data = call_gnews_url(article_req_url).parse
-      articles_data.map { |article_data| Article.new(article_data) }
+      articles = articles_data['articles']
+      articles.map { |article_data| Article.new(article_data,articles_data['source']) }
     end
   
     private
@@ -39,11 +40,10 @@ module UserPraise
      end
      
      def call_gnews_url(url)
-       result = @cache.fetch(url) do
+       result = 
          HTTP.headers(
            'Accept' => 'application/json',
            'x-api-key' => "#{@gnews_token}" ).get(url)
-       end
        successful?(result) ? result : raise_error(result)
      end
      
